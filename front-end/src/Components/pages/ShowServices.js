@@ -137,8 +137,8 @@ const Box = styled.div`
     justify-content: end;
 
     div {
-      border: 1px solid #696969;
-      background-color: #dcdcdc;
+      border: 1px solid #3cb371;
+      background-color: #3cb371;
       color: var(--cor-texto);
       border-radius: 10px;
       padding: 15px;
@@ -153,8 +153,7 @@ const Box = styled.div`
       }
 
       :hover {
-        background-color: #696969;
-        color: var(--cor-fundo);
+        filter: brightness(0.9);
         cursor: pointer;
       }
 
