@@ -169,7 +169,7 @@ const Box = styled.div`
     div {
       border: 1px solid #3cb371;
       background-color: #3cb371;
-      color: var(--cor-texto);
+      color: var(--cor-fundo);
       border-radius: 10px;
       padding: 15px;
       margin-bottom: 10px;
