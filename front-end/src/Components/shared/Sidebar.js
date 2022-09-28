@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useContext } from "react";
 import Context from "../../Context/Context";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   const { openSidebar } = useContext(Context);
@@ -8,22 +9,30 @@ export default function Sidebar() {
   return openSidebar ? (
     <SidebarStyle>
       <ul>
-        <li>
-          <ion-icon name="newspaper-outline"></ion-icon>
-          <p>Agenda</p>
-        </li>
-        <li>
-          <ion-icon name="people-outline"></ion-icon>
-          <p>Clientes</p>
-        </li>
-        <li>
-          <ion-icon name="bag-handle-outline"></ion-icon>
-          <p>Serviços</p>
-        </li>
-        <li>
-          <ion-icon name="person-outline"></ion-icon>
-          <p>Profissionais</p>
-        </li>
+        <Link to="/schedule">
+          <li>
+            <ion-icon name="newspaper-outline"></ion-icon>
+            <p>Agenda</p>
+          </li>
+        </Link>
+        <Link to="/showClients">
+          <li>
+            <ion-icon name="people-outline"></ion-icon>
+            <p>Clientes</p>
+          </li>
+        </Link>
+        <Link to="/showServices">
+          <li>
+            <ion-icon name="bag-handle-outline"></ion-icon>
+            <p>Serviços</p>
+          </li>
+        </Link>
+        <Link to="/showProfessionals">
+          <li>
+            <ion-icon name="person-outline"></ion-icon>
+            <p>Profissionais</p>
+          </li>
+        </Link>
       </ul>
     </SidebarStyle>
   ) : null;
@@ -58,6 +67,11 @@ const SidebarStyle = styled.div`
         font-size: 22px;
         margin-right: 10px;
       }
+    }
+
+    a{
+      text-decoration: none;
+      color: var(--cor-texto);
     }
   }
 `;

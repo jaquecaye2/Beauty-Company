@@ -3,6 +3,7 @@ import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
+// criar um events para cada profissional - pegar isso na api conforme o id do profissional vier
 import events from "../events/events.js";
 
 import Sidebar from "../shared/Sidebar";
@@ -23,19 +24,19 @@ export default function Schedule() {
           <h3>Escolha o profissional que você deseja ver a agenda:</h3>
           <div className="professionals">
             <div>
-              <img src={perfil1} alt="foto perfil"/>
+              <img src={perfil1} alt="foto perfil" />
               <p>Tocya</p>
             </div>
             <div>
-              <img src={perfil2} alt="foto perfil"/>
+              <img src={perfil2} alt="foto perfil" />
               <p>Sopon</p>
             </div>
             <div>
-              <img src={perfil3} alt="foto perfil"/>
+              <img src={perfil3} alt="foto perfil" />
               <p>Rorea</p>
             </div>
             <div>
-              <img src={perfil4} alt="foto perfil"/>
+              <img src={perfil4} alt="foto perfil" />
               <p>Elbro</p>
             </div>
           </div>
@@ -48,6 +49,15 @@ export default function Schedule() {
             endAccessor="end"
             defaultView={Views.DAY}
             style={{ height: 500 }}
+            min={new Date(0, 0, 0, 8, 0, 0)}
+            max={new Date(0, 0, 0, 19, 0, 0)}
+            eventPropGetter={(event, start, end, isSelected) => ({
+                event,
+                start,
+                end,
+                isSelected,
+                style: { backgroundColor: "#9e3f39" }
+              })}
           />
         </div>
       </BoxCalendar>
@@ -66,8 +76,16 @@ const BoxCalendar = styled.div`
   width: 75%;
   margin: 0 auto;
 
-  div.calendar{
+  div.calendar {
     margin-bottom: 50px;
+
+    .rbc-timeslot-group {
+      min-height: 70px;
+    }
+
+    .rbc-calendar {
+      font-size: 14px;
+    }
   }
 `;
 
