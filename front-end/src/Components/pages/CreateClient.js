@@ -11,6 +11,7 @@ export default function CreateClient() {
       <Sidebar />
       <Box>
         <h3>Cadastrar Novo Cliente</h3>
+
         <form>
           <ElementForm>
             <h4>Informações pessoais</h4>
@@ -124,6 +125,7 @@ export default function CreateClient() {
             </div>
           </ElementForm>
         </form>
+
         <Buttons>
           <Link to="/showClients">
             <button>Voltar</button>
@@ -255,7 +257,6 @@ const Buttons = styled.div`
   a{
     text-decoration: none;
     color: var(--cor-fundo);
-    width: 100%;
   }
 
   button {
@@ -265,7 +266,7 @@ const Buttons = styled.div`
     background-color: var(--cor-detalhes);
     color: var(--cor-fundo);
     height: 30px;
-    width: 20%;
+    width: 150px;
 
     :hover {
       filter: brightness(0.8);
