@@ -13,14 +13,14 @@ export default function ShowCLients() {
     <Window>
       <Sidebar />
       <Box>
-        <Link to="/createClient">
-          <div className="newClient">
+        <div className="newClient">
+          <Link to="/createClient">
             <div>
               <p>Cadastrar novo cliente</p>
               <ion-icon name="person-add-outline"></ion-icon>
             </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
 
         <table border="1">
           <thead>
@@ -155,7 +155,7 @@ const Box = styled.div`
   width: 75%;
   margin: 0 auto;
 
-  a{
+  a {
     text-decoration: none;
   }
 
@@ -167,9 +167,9 @@ const Box = styled.div`
     justify-content: end;
 
     div {
-      border: 1px solid var(--cor-detalhes);
-      background-color: #696969;
-      color: var(--cor-fundo);
+      border: 1px solid #696969;
+      background-color: #dcdcdc;
+      color: var(--cor-texto);
       border-radius: 10px;
       padding: 15px;
       margin-bottom: 10px;
@@ -183,7 +183,7 @@ const Box = styled.div`
       }
 
       :hover {
-        background-color: var(--cor-detalhes);
+        background-color: #696969;
         color: var(--cor-fundo);
         cursor: pointer;
       }
