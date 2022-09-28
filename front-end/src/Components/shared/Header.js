@@ -72,7 +72,7 @@ const HeaderStyle = styled.header`
 
     img {
       margin: 0 0 0 10px;
-      width: 200px;
+      width: 175px;
     }
 
     h1 {

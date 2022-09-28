@@ -42,6 +42,7 @@ const SidebarStyle = styled.div`
   background-color: var(--cor-header);
   border: 1px solid var(--cor-lateral);
   width: 25%;
+  min-height: 500px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 80px;

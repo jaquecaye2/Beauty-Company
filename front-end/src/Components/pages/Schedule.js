@@ -56,7 +56,7 @@ export default function Schedule() {
                 start,
                 end,
                 isSelected,
-                style: { backgroundColor: "#9e3f39" }
+                style: { backgroundColor: "#8C6E64" }
               })}
           />
         </div>
@@ -66,7 +66,7 @@ export default function Schedule() {
 }
 
 const Window = styled.div`
-  margin-top: 84px;
+  margin-top: 85px;
   width: 100%;
   display: flex;
 `;
@@ -93,8 +93,9 @@ const Professionals = styled.div`
   display: flex;
   flex-direction: column;
   background-color: var(--cor-header);
+  border-radius: 10px;
   margin-bottom: 50px;
-  padding: 10px;
+  padding: 15px;
 
   h3 {
     font-size: 18px;
