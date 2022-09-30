@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import InputMask from "react-input-mask";
 
 import Sidebar from "../shared/Sidebar";
 
 export default function CreateService() {
+  // ao clicar em outro abrir um novo input dizendo qual é o outro serviço e cadastrar esse no banco
+
   return (
     <Window>
       <Sidebar />
@@ -13,18 +16,19 @@ export default function CreateService() {
         <FormStyle>
           <div>
             <label>Tipo de serviço:</label>
-            <select name="select">
+            <select name="select" required>
               <option value="null" selected></option>
               <option value="hair">Cabelos</option>
               <option value="nails">Unhas</option>
               <option value="makeup">Maquiagem</option>
               <option value="hairRemoval">Depilação</option>
+              <option value="other">Outro</option>
             </select>
           </div>
 
           <div>
             <label for="name">Nome do serviço:</label>
-            <input type="text" id="name" name="name" />
+            <input type="text" id="name" name="name" required/>
           </div>
 
           <div>
@@ -34,7 +38,7 @@ export default function CreateService() {
 
           <div>
             <label for="price">Valor do serviço:</label>
-            <input type="number" id="price" name="price" min="0"/>
+            <input type="number" id="price" name="price" min="0" required/>
           </div>
         </FormStyle>
 

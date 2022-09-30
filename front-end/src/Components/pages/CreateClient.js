@@ -1,9 +1,11 @@
 import styled from "styled-components";
+import InputMask from "react-input-mask";
+import { Link } from "react-router-dom";
 
 import Sidebar from "../shared/Sidebar";
 
 import perfil from "../../assets/images/example.jpeg";
-import { Link } from "react-router-dom";
+
 
 export default function CreateClient() {
   return (
@@ -27,24 +29,30 @@ export default function CreateClient() {
                   id="avatar"
                   name="avatar"
                   accept="image/png, image/jpeg"
+                  required
                 />
               </div>
               <div>
                 <div>
                   <label for="name">Nome Completo:</label>
-                  <input type="text" id="name" name="name" />
+                  <input type="text" id="name" name="name" required />
                 </div>
                 <div>
                   <label for="date">Data de nascimento:</label>
-                  <input type="date" id="date" name="date" />
+                  <input type="date" id="date" name="date" required />
                 </div>
                 <div>
                   <label for="cpf">CPF:</label>
-                  <input type="text" id="cpf" name="cpf" />
+                  <InputMask
+                    id="cpf"
+                    name="cpf"
+                    mask="999.999.999-99"
+                    required
+                  />
                 </div>
                 <div>
                   <label>Sexo:</label>
-                  <select name="select">
+                  <select name="select" required>
                     <option value="null" selected></option>
                     <option value="female" selected>
                       Feminino
@@ -63,11 +71,11 @@ export default function CreateClient() {
             <div>
               <div>
                 <label for="adress">Endereço:</label>
-                <input type="text" id="adress" name="adress" />
+                <input type="text" id="adress" name="adress" required />
               </div>
               <div>
                 <label for="number">Número:</label>
-                <input type="text" id="number" name="number" />
+                <input type="text" id="number" name="number" required />
               </div>
               <div>
                 <label for="complement">Complemento:</label>
@@ -75,15 +83,15 @@ export default function CreateClient() {
               </div>
               <div>
                 <label for="district">Bairro:</label>
-                <input type="text" id="district" name="district" />
+                <input type="text" id="district" name="district" required />
               </div>
               <div>
                 <label for="city">Cidade:</label>
-                <input type="text" id="city" name="city" />
+                <input type="text" id="city" name="city" required />
               </div>
               <div>
                 <label for="state">Estado:</label>
-                <input type="text" id="state" name="state" />
+                <input type="text" id="state" name="state" required />
               </div>
             </div>
           </ElementForm>
@@ -93,7 +101,12 @@ export default function CreateClient() {
             <div className="contacts">
               <div>
                 <label for="phone">Telefone:</label>
-                <input type="text" id="phone" name="phone" />
+                <InputMask
+                  id="phone"
+                  name="phone"
+                  mask="(99) 99999-9999"
+                  required
+                />
               </div>
               <div>
                 <label for="email">E-mail:</label>
@@ -108,11 +121,11 @@ export default function CreateClient() {
             <div>
               <div>
                 <label for="email2">E-mail:</label>
-                <input type="email" id="email2" name="email2" />
+                <input type="email" id="email2" name="email2" required />
               </div>
               <div>
                 <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" />
+                <input type="password" id="password" name="password" required />
               </div>
               <div>
                 <label for="confirmPassword">Confirme a senha:</label>
@@ -120,18 +133,19 @@ export default function CreateClient() {
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
+                  required
                 />
               </div>
             </div>
           </ElementForm>
-        </form>
 
-        <Buttons>
-          <Link to="/showClients">
-            <button>Voltar</button>
-          </Link>
-          <button className="confirm">Cadastrar</button>
-        </Buttons>
+          <Buttons>
+            <Link to="/showClients">
+              <button>Voltar</button>
+            </Link>
+            <button className="confirm">Cadastrar</button>
+          </Buttons>
+        </form>
       </Box>
     </Window>
   );
@@ -254,7 +268,7 @@ const Buttons = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  a{
+  a {
     text-decoration: none;
     color: var(--cor-fundo);
   }
