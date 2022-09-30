@@ -2,7 +2,7 @@ import styled from "styled-components";
 import InputMask from "react-input-mask";
 import { Link } from "react-router-dom";
 
-import Sidebar from "../shared/Sidebar";
+import SidebarClient from "../shared/SidebarClient";
 
 import perfil from "../../assets/images/example.jpeg";
 
@@ -11,8 +11,9 @@ export default function ClientProfile() {
 
   return (
     <Window>
-      <Sidebar />
+      <SidebarClient />
       <Box>
+        <h3>Meu perfil</h3>
         <form>
           <ElementForm>
             <h4>Informações pessoais</h4>

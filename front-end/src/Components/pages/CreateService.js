@@ -14,40 +14,41 @@ export default function CreateService() {
         <h3>Cadastrar Novo Serviço</h3>
 
         <FormStyle>
-          <div>
-            <label>Tipo de serviço:</label>
-            <select name="select" required>
-              <option value="null" selected></option>
-              <option value="hair">Cabelos</option>
-              <option value="nails">Unhas</option>
-              <option value="makeup">Maquiagem</option>
-              <option value="hairRemoval">Depilação</option>
-              <option value="other">Outro</option>
-            </select>
-          </div>
+          <div className="inputs">
+            <div>
+              <label>Tipo de serviço:</label>
+              <select name="select" required>
+                <option value="null" selected></option>
+                <option value="hair">Cabelos</option>
+                <option value="nails">Unhas</option>
+                <option value="makeup">Maquiagem</option>
+                <option value="hairRemoval">Depilação</option>
+                <option value="other">Outro</option>
+              </select>
+            </div>
 
-          <div>
-            <label for="name">Nome do serviço:</label>
-            <input type="text" id="name" name="name" required/>
-          </div>
+            <div>
+              <label for="name">Nome do serviço:</label>
+              <input type="text" id="name" name="name" required />
+            </div>
 
-          <div>
-            <label for="description">Descrição do serviço:</label>
-            <input type="text" id="description" name="description" />
-          </div>
+            <div>
+              <label for="description">Descrição do serviço:</label>
+              <input type="text" id="description" name="description" />
+            </div>
 
-          <div>
-            <label for="price">Valor do serviço:</label>
-            <input type="number" id="price" name="price" min="0" required/>
+            <div>
+              <label for="price">Valor do serviço:</label>
+              <input type="number" id="price" name="price" min="0" required />
+            </div>
           </div>
+          <Buttons>
+            <Link to="/showServices">
+              <button>Voltar</button>
+            </Link>
+            <button className="confirm">Cadastrar</button>
+          </Buttons>
         </FormStyle>
-
-        <Buttons>
-          <Link to="/showServices">
-            <button>Voltar</button>
-          </Link>
-          <button className="confirm">Cadastrar</button>
-        </Buttons>
       </Box>
     </Window>
   );
@@ -78,30 +79,28 @@ const FormStyle = styled.div`
   border-top: 1px solid var(--cor-detalhes);
   padding: 20px 0;
 
-  div{
+  div.inputs {
     display: flex;
     align-items: initial;
     flex-direction: column;
-    
   }
 
-  label {
-    margin-bottom: 5px;
-  }
-
-  input, select{
+  input,
+  select {
     height: 30px;
     width: 100%;
     border-radius: 5px;
     border: 1px solid var(--cor-texto);
     padding: 0 10px;
     margin-bottom: 20px;
+    margin-top: 5px;
   }
-`
+`;
 
 const Buttons = styled.div`
   display: flex;
   align-items: center;
+  flex-direction: row;
   justify-content: space-between;
 
   a {

@@ -28,6 +28,9 @@ export default function Header() {
     
   }
 
+  // mudar o link da logo dependente do usuario q acessar
+  // mudar o header de acordo com o usuario logo - se cliente adicionar no lado direito a fotinha
+
   return canRenderHeader() ? (
     <HeaderStyle>
       <div>
