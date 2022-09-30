@@ -252,6 +252,7 @@ const ElementForm = styled.div`
   }
 
   select {
+    background-color: var(--cor-branca);
     height: 30px;
     width: 100%;
     border-radius: 5px;
