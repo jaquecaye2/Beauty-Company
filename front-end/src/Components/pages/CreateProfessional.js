@@ -9,7 +9,6 @@ import perfil from "../../assets/images/example.jpeg";
 export default function CreateProfessional() {
   // abrir os serviços de acordo com os itens selecionados
 
-
   return (
     <Window>
       <Sidebar />
@@ -56,9 +55,7 @@ export default function CreateProfessional() {
                   <label>Sexo:</label>
                   <select name="select" required>
                     <option value="null" selected></option>
-                    <option value="female" selected>
-                      Feminino
-                    </option>
+                    <option value="female">Feminino</option>
                     <option value="masc">Masculino</option>
                     <option value="other">Prefiro não responder</option>
                   </select>
