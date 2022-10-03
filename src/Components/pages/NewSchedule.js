@@ -2,9 +2,6 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
-import TimePicker from "react-time-picker";
-import getMonth from "date-fns/getMonth";
-import getYear from "date-fns/getYear";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -12,24 +9,7 @@ import SidebarClient from "../shared/SidebarClient";
 
 export default function NewSchedule() {
   const [startDate, setStartDate] = useState(new Date());
-  const [time, setTime] = useState("10:00");
-
-  const years = [2022, 2023];
-  const months = [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro",
-  ];
-
+  
   const isWeekday = (date) => {
     const day = date.getDay();
     return day !== 1 && day !== 0;
