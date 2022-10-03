@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React from "react";
 
 import Button from "../shared/Button";
@@ -7,10 +7,13 @@ import Button from "../shared/Button";
 import logo from "../../assets/images/logo.png"
 
 export default function SignIn() {
+  function login(){
+
+  }
 
   return (
     <Window>
-      <FormStyle>
+      <FormStyle onSubmit={login()}>
         <div className="logo">
           <img src={logo} alt="logotipo da empresa"/>
         </div>

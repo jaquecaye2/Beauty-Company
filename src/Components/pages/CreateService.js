@@ -62,6 +62,7 @@ const Window = styled.div`
 
 const Box = styled.div`
   padding: 20px;
+  padding-bottom: 220px;
   width: 75%;
   margin: 0 auto;
 

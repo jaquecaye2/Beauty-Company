@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 
 export default function Header() {
-  const { openSidebar, setOpenSidebar } = useContext(Context);
+  const { openSidebar, setOpenSidebar, accessLevel } = useContext(Context);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ export default function Header() {
     <HeaderStyle>
       <div>
         <ion-icon onClick={menu} name="menu-outline"></ion-icon>
-        <Link to="/schedule">
+        <Link to={accessLevel === "company" ? ("/schedule") : ("/newSchedule")}>
           <div>
             <img src={logo} alt="logo da empresa" />
           </div>

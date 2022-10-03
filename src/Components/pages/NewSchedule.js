@@ -94,7 +94,7 @@ export default function NewSchedule() {
             </select>
           </div>
 
-
+          <label>Data do agendamento:</label>
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -158,6 +158,7 @@ const Box = styled.div`
 const FormStyle = styled.div`
   border-top: 1px solid var(--cor-detalhes);
   padding: 20px 0;
+  padding-bottom: 100px;
 
   div.inputs {
     display: flex;
