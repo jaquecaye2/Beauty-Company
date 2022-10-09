@@ -17,17 +17,18 @@ import NewSchedule from "../Components/pages/NewSchedule.js"
 
 export default function App() {
   const [token, setToken] = React.useState("");
+  const [iduser, setIdUSer] = React.useState("");
   const [openSidebar, setOpenSidebar] = React.useState(false)
   const [accessLevel, setAccessLevel] = React.useState("")
 
   return (
     <>
-      <Context.Provider value={{ token, setToken, openSidebar, setOpenSidebar, accessLevel, setAccessLevel}}>
+      <Context.Provider value={{ token, setToken, openSidebar, setOpenSidebar, accessLevel, setAccessLevel, iduser, setIdUSer}}>
         <BrowserRouter>
           <Header />
           <Routes>
             <Route path="/" element={<SignIn />} />
-            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/schedule/:id_professional" element={<Schedule />} />
             <Route path="/showClients" element={<ShowClients />} />
             <Route path="/createClient" element={<CreateClient />} />
             <Route path="/showServices" element={<ShowServices />} />

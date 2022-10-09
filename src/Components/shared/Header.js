@@ -35,7 +35,7 @@ export default function Header() {
     <HeaderStyle>
       <div>
         <ion-icon onClick={menu} name="menu-outline"></ion-icon>
-        <Link to={accessLevel === "company" ? ("/schedule") : ("/clientProfile")}>
+        <Link to={accessLevel === "company" ? ("/schedule/1") : ("/clientProfile")}>
           <div>
             <img src={logo} alt="logo da empresa" />
           </div>

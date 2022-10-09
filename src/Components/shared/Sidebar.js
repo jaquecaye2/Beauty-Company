@@ -9,7 +9,7 @@ export default function Sidebar() {
   return openSidebar ? (
     <SidebarStyle>
       <ul>
-        <Link to="/schedule">
+        <Link to="/schedule/1">
           <li>
             <ion-icon name="newspaper-outline"></ion-icon>
             <p>Agenda</p>

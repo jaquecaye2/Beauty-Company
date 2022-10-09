@@ -36,7 +36,6 @@ export default function ClientProfile() {
         } else {
           setSex("Prefiro não responder");
         }
-        console.log(response.data.birthdate);
         const birthdateFormat = response.data.birthdate.split("/");
         setBirthday(
           `${birthdateFormat[2]}/${birthdateFormat[1]}/${birthdateFormat[0]}`

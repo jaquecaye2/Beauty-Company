@@ -11,7 +11,7 @@ import Button from "../shared/Button";
 import logo from "../../assets/images/logo.png";
 
 export default function SignIn() {
-  const { setToken, setAccessLevel } = useContext(Context);
+  const { setToken, setAccessLevel, setIdUSer } = useContext(Context);
 
   const [typeLogin, setTypeLogin] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -71,10 +71,9 @@ export default function SignIn() {
 
       promise
         .then((response) => {
-          console.log(response.data);
           setToken(response.data);
           setAccessLevel("company");
-          navigate("/schedule");
+          navigate("/schedule/1");
         })
         .catch((error) => {
           setError(error.response.data);
@@ -90,8 +89,8 @@ export default function SignIn() {
 
       promise
         .then((response) => {
-          console.log(response.data);
-          setToken(response.data);
+          setToken(response.data.token);
+          setIdUSer(response.data.iduser);
           setAccessLevel("client");
           navigate("/clientProfile");
         })
