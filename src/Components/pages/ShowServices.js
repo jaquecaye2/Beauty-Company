@@ -1,9 +1,62 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Context from "../../Context/Context";
+import React, { useContext } from "react";
+import axios from "axios";
 
 import Sidebar from "../shared/Sidebar";
 
+function Services({ service }) {
+  const nameSector =  service.sectors.name[0].toUpperCase() + service.sectors.name.substring(1);
+
+  const nameService = service.name[0].toUpperCase() + service.name.substring(1)
+
+  return (
+    <tr>
+      <td>{nameSector}</td>
+      <td>{nameService}</td>
+      <td>R$ {service.price},00</td>
+      <td className="modifyElement">
+        <ion-icon name="create-outline"></ion-icon>
+      </td>
+      <td className="modifyElement">
+        <ion-icon name="trash-outline"></ion-icon>
+      </td>
+    </tr>
+  );
+}
+
 export default function ShowServices() {
+  const { token } = useContext(Context);
+  const navigate = useNavigate();
+
+  const [services, setServices] = React.useState([]);
+
+  function renderProfessionals() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const promise = axios.get("http://localhost:5000/services", config);
+
+    promise
+      .then((response) => {
+        console.log(response.data);
+        setServices(response.data);
+      })
+      .catch((error) => {
+        alert("Sessão expirada!");
+        navigate("/");
+      });
+  }
+
+  React.useEffect(() => {
+    renderProfessionals();
+  }, []);
+
   return (
     <Window>
       <Sidebar />
@@ -20,6 +73,7 @@ export default function ShowServices() {
         <table border="1">
           <thead>
             <tr>
+              <th>Setor</th>
               <th>Serviço</th>
               <th>Valor</th>
               <th className="modifyElement">Editar</th>
@@ -27,86 +81,9 @@ export default function ShowServices() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Corte de cabelo</td>
-              <td>R$100,00</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>Corte de cabelo</td>
-              <td>R$100,00</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>Corte de cabelo</td>
-              <td>R$100,00</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>Corte de cabelo</td>
-              <td>R$100,00</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>Corte de cabelo</td>
-              <td>R$100,00</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>Corte de cabelo</td>
-              <td>R$100,00</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>Corte de cabelo</td>
-              <td>R$100,00</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>Corte de cabelo</td>
-              <td>R$100,00</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
+            {services.map((service, index) => (
+              <Services key={index} service={service} />
+            ))}
           </tbody>
         </table>
       </Box>
@@ -124,6 +101,7 @@ const Box = styled.div`
   padding: 20px;
   width: 75%;
   margin: 0 auto;
+  padding-bottom: 200px;
 
   a {
     text-decoration: none;
@@ -194,7 +172,7 @@ const Box = styled.div`
     font-weight: bold;
     font-size: 18px;
     text-align: center;
-    width: 40%;
+    width: 30%;
   }
 
   th.modifyElement {
@@ -203,7 +181,7 @@ const Box = styled.div`
 
   td {
     text-align: center;
-    width: 40%;
+    width: 30%;
 
     ion-icon {
       font-size: 25px;
@@ -235,3 +213,4 @@ const Box = styled.div`
     border-radius: 50px;
   }
 `;
+

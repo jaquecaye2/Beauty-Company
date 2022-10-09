@@ -1,14 +1,59 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Context from "../../Context/Context";
+import React, { useContext } from "react";
+import axios from "axios";
 
 import Sidebar from "../shared/Sidebar";
 
-import perfil1 from "../../assets/images/perfil1.jpeg";
-import perfil2 from "../../assets/images/perfil2.jpeg";
-import perfil3 from "../../assets/images/perfil3.jpeg";
-import perfil4 from "../../assets/images/perfil4.jpg";
+function Professionals({ professional }) {
+  return (
+    <tr>
+      <td>
+        <img src={professional.image} alt="foto perfil" />
+      </td>
+      <td>{professional.name}</td>
+      <td>{professional.phone}</td>
+      <td className="modifyElement">
+        <ion-icon name="create-outline"></ion-icon>
+      </td>
+      <td className="modifyElement">
+        <ion-icon name="trash-outline"></ion-icon>
+      </td>
+    </tr>
+  );
+}
 
 export default function ShowProfessionals() {
+  const { token } = useContext(Context);
+  const navigate = useNavigate();
+
+  const [professionals, setProfessionals] = React.useState([]);
+
+  function renderProfessionals() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const promise = axios.get("http://localhost:5000/professionals", config);
+
+    promise
+      .then((response) => {
+        setProfessionals(response.data);
+      })
+      .catch((error) => {
+        alert("Sessão expirada!");
+        navigate("/");
+      });
+  }
+
+  React.useEffect(() => {
+    renderProfessionals();
+  }, []);
+
   return (
     <Window>
       <Sidebar />
@@ -33,110 +78,9 @@ export default function ShowProfessionals() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <img src={perfil1} alt="foto perfil" />
-              </td>
-              <td>Fulano</td>
-              <td>Cabelos</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil2} alt="foto perfil" />
-              </td>
-              <td>Ciclano</td>
-              <td>Unhas</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil3} alt="foto perfil" />
-              </td>
-              <td>Beltrano</td>
-              <td>Maquiagem</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil4} alt="foto perfil" />
-              </td>
-              <td>Fulano</td>
-              <td>Maquiagem</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil1} alt="foto perfil" />
-              </td>
-              <td>Ciclano</td>
-              <td>Depilação</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil2} alt="foto perfil" />
-              </td>
-              <td>Beltrano</td>
-              <td>Cabelo</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil3} alt="foto perfil" />
-              </td>
-              <td>Fulano</td>
-              <td>Unhas</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil4} alt="foto perfil" />
-              </td>
-              <td>Ciclano</td>
-              <td>Depilação</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
+            {professionals.map((professional, index) => (
+              <Professionals key={index} professional={professional} />
+            ))}
           </tbody>
         </table>
       </Box>
@@ -154,6 +98,7 @@ const Box = styled.div`
   padding: 20px;
   width: 75%;
   margin: 0 auto;
+  padding-bottom: 200px;
 
   a {
     text-decoration: none;

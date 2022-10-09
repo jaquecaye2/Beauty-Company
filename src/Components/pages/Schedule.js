@@ -193,12 +193,13 @@ const ProfessionalsStyle = styled.div`
     div {
       background-color: var(--cor-header);
       padding: 10px;
-      width: 25%;
+      width: 23%;
       height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 1px solid var(--cor-lateral);
+      margin: 5px;
 
       :hover {
         filter: brightness(0.9);

@@ -1,14 +1,59 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Context from "../../Context/Context";
+import React, { useContext } from "react";
+import axios from "axios";
 
 import Sidebar from "../shared/Sidebar";
 
-import perfil1 from "../../assets/images/perfil1.jpeg";
-import perfil2 from "../../assets/images/perfil2.jpeg";
-import perfil3 from "../../assets/images/perfil3.jpeg";
-import perfil4 from "../../assets/images/perfil4.jpg";
+function Clients({client}) {
+  return (
+    <tr>
+      <td>
+        <img src={client.image} alt="foto perfil" />
+      </td>
+      <td>{client.name}</td>
+      <td>{client.phone}</td>
+      <td className="modifyElement">
+        <ion-icon name="create-outline"></ion-icon>
+      </td>
+      <td className="modifyElement">
+        <ion-icon name="trash-outline"></ion-icon>
+      </td>
+    </tr>
+  );
+}
 
 export default function ShowCLients() {
+  const { token } = useContext(Context);
+  const navigate = useNavigate();
+
+  const [clients, setClients] = React.useState([]);
+
+  function renderClients() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const promise = axios.get("http://localhost:5000/clients", config);
+
+    promise
+      .then((response) => {
+        setClients(response.data);
+      })
+      .catch((error) => {
+        alert("Sessão expirada!");
+        navigate("/");
+      });
+  }
+
+  React.useEffect(() => {
+    renderClients();
+  }, []);
+
   return (
     <Window>
       <Sidebar />
@@ -33,110 +78,9 @@ export default function ShowCLients() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <img src={perfil1} alt="foto perfil" />
-              </td>
-              <td>Fulano</td>
-              <td>(55) 9 97048940</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil2} alt="foto perfil" />
-              </td>
-              <td>Ciclano</td>
-              <td>(55) 9 97048940</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil3} alt="foto perfil" />
-              </td>
-              <td>Beltrano</td>
-              <td>(55) 9 97048940</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil4} alt="foto perfil" />
-              </td>
-              <td>Fulano</td>
-              <td>(55) 9 97048940</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil1} alt="foto perfil" />
-              </td>
-              <td>Ciclano</td>
-              <td>(55) 9 97048940</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil2} alt="foto perfil" />
-              </td>
-              <td>Beltrano</td>
-              <td>(55) 9 97048940</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil3} alt="foto perfil" />
-              </td>
-              <td>Fulano</td>
-              <td>(55) 9 97048940</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src={perfil4} alt="foto perfil" />
-              </td>
-              <td>Ciclano</td>
-              <td>(55) 9 97048940</td>
-              <td className="modifyElement">
-                <ion-icon name="create-outline"></ion-icon>
-              </td>
-              <td className="modifyElement">
-                <ion-icon name="trash-outline"></ion-icon>
-              </td>
-            </tr>
+            {clients.map((client, index) => (
+              <Clients key={index} client={client} />
+            ))}
           </tbody>
         </table>
       </Box>
@@ -154,6 +98,7 @@ const Box = styled.div`
   padding: 20px;
   width: 75%;
   margin: 0 auto;
+  padding-bottom: 500px;
 
   a {
     text-decoration: none;
