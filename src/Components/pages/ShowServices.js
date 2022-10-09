@@ -44,7 +44,6 @@ export default function ShowServices() {
 
     promise
       .then((response) => {
-        console.log(response.data);
         setServices(response.data);
       })
       .catch((error) => {
