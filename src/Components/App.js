@@ -18,7 +18,7 @@ import NewSchedule from "../Components/pages/NewSchedule.js"
 export default function App() {
   const [token, setToken] = React.useState("");
   const [openSidebar, setOpenSidebar] = React.useState(false)
-  const [accessLevel, setAccessLevel] = React.useState("company")
+  const [accessLevel, setAccessLevel] = React.useState("")
 
   return (
     <>

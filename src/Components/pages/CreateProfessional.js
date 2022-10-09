@@ -103,43 +103,6 @@ export default function CreateProfessional() {
                 </label>
               </div>
             </div>
-            <div className="sectors">
-              <h5>Serviços que serão realizados</h5>
-              <div>
-                <label>
-                  <input type="checkbox" value="hair" />
-                  Corte feminino
-                </label>
-                <label>
-                  <input type="checkbox" value="nails" />
-                  Matização
-                </label>
-                <label>
-                  <input type="checkbox" value="makeup" />
-                  Hidratação
-                </label>
-                <label>
-                  <input type="checkbox" value="hairRemoval" />
-                  Cauterização
-                </label>
-                <label>
-                  <input type="checkbox" value="hair" />
-                  Corte feminino
-                </label>
-                <label>
-                  <input type="checkbox" value="nails" />
-                  Matização
-                </label>
-                <label>
-                  <input type="checkbox" value="makeup" />
-                  Hidratação
-                </label>
-                <label>
-                  <input type="checkbox" value="hairRemoval" />
-                  Cauterização
-                </label>
-              </div>
-            </div>
           </ElementForm>
 
           <ElementForm>

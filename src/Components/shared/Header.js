@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 
 export default function Header() {
-  const { openSidebar, setOpenSidebar, accessLevel } = useContext(Context);
+  const { openSidebar, setOpenSidebar, accessLevel, setToken } = useContext(Context);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -16,6 +16,7 @@ export default function Header() {
   }
 
   function logout() {
+    setToken("")
     navigate("/");
   }
 
@@ -28,14 +29,13 @@ export default function Header() {
     
   }
 
-  // mudar o link da logo dependente do usuario q acessar
   // mudar o header de acordo com o usuario logo - se cliente adicionar no lado direito a fotinha
 
   return canRenderHeader() ? (
     <HeaderStyle>
       <div>
         <ion-icon onClick={menu} name="menu-outline"></ion-icon>
-        <Link to={accessLevel === "company" ? ("/schedule") : ("/newSchedule")}>
+        <Link to={accessLevel === "company" ? ("/schedule") : ("/clientProfile")}>
           <div>
             <img src={logo} alt="logo da empresa" />
           </div>
@@ -44,7 +44,7 @@ export default function Header() {
       <div>
         <ion-icon name="person-outline"></ion-icon>
         <ion-icon name="notifications-outline"></ion-icon>
-        <ion-icon name="log-out-outline"></ion-icon>
+        <ion-icon name="log-out-outline" onClick={logout}></ion-icon>
       </div>
     </HeaderStyle>
   ) : null;

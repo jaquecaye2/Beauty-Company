@@ -1,13 +1,57 @@
 import styled from "styled-components";
 import InputMask from "react-input-mask";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Context from "../../Context/Context";
+import React, { useContext } from "react";
+import axios from "axios";
 
 import SidebarClient from "../shared/SidebarClient";
 
-import perfil from "../../assets/images/example.jpeg";
-
 export default function ClientProfile() {
   // adicionar o olhinho em todos os passwords
+  // verificar formato que retorna as senhas
+
+  const { token } = useContext(Context);
+  const navigate = useNavigate();
+
+  const [data, setData] = React.useState([]);
+  const [sex, setSex] = React.useState("");
+  const [birthday, setBirthday] = React.useState("");
+
+  function renderPerson() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const promise = axios.get("http://localhost:5000/myprofile", config);
+
+    promise
+      .then((response) => {
+        if (response.data.sex === "female") {
+          setSex("Feminino");
+        } else if (response.data.sex === "male") {
+          setSex("Masculino");
+        } else {
+          setSex("Prefiro não responder");
+        }
+        console.log(response.data.birthdate);
+        const birthdateFormat = response.data.birthdate.split("/");
+        setBirthday(
+          `${birthdateFormat[2]}/${birthdateFormat[1]}/${birthdateFormat[0]}`
+        );
+        setData(response.data);
+      })
+      .catch((error) => {
+        alert("Sessão expirada!");
+        navigate("/");
+      });
+  }
+
+  React.useEffect(() => {
+    renderPerson();
+  }, []);
 
   return (
     <Window>
@@ -20,16 +64,9 @@ export default function ClientProfile() {
 
             <div className="personalInfo">
               <div className="profilePicture">
-                <label for="avatar">Escolha uma foto de perfil:</label>
                 <div>
-                  <img src={perfil} />
+                  <img src={data.image} />
                 </div>
-                <input
-                  type="file"
-                  id="avatar"
-                  name="avatar"
-                  accept="image/png, image/jpeg"
-                />
               </div>
               <div>
                 <div>
@@ -38,17 +75,17 @@ export default function ClientProfile() {
                     type="text"
                     id="name"
                     name="name"
-                    value="Jaqueline Caye"
+                    value={data.name}
                     disabled
                   />
                 </div>
                 <div>
                   <label for="date">Data de nascimento:</label>
                   <input
-                    type="date"
+                    type="text"
                     id="date"
                     name="date"
-                    value="14/12/1997"
+                    value={birthday}
                     disabled
                   />
                 </div>
@@ -58,19 +95,14 @@ export default function ClientProfile() {
                     id="cpf"
                     name="cpf"
                     mask="999.999.999-99"
-                    value="028.171.580-75"
+                    value={data.cpf}
                     disabled
                   />
                 </div>
                 <div>
                   <label>Sexo:</label>
                   <select name="select" disabled>
-                    <option value="null"></option>
-                    <option value="female" selected>
-                      Feminino
-                    </option>
-                    <option value="masc">Masculino</option>
-                    <option value="other">Prefiro não responder</option>
+                    <option selected>{sex}</option>
                   </select>
                 </div>
               </div>
@@ -87,7 +119,7 @@ export default function ClientProfile() {
                   type="text"
                   id="adress"
                   name="adress"
-                  value="Rua Guaporé"
+                  value={data.street}
                   disabled
                 />
               </div>
@@ -97,7 +129,7 @@ export default function ClientProfile() {
                   type="text"
                   id="number"
                   name="number"
-                  value="62D"
+                  value={data.number}
                   disabled
                 />
               </div>
@@ -107,7 +139,7 @@ export default function ClientProfile() {
                   type="text"
                   id="complement"
                   name="complement"
-                  value="Apto 1102, edifício Acácias"
+                  value={data.complement}
                   disabled
                 />
               </div>
@@ -117,7 +149,7 @@ export default function ClientProfile() {
                   type="text"
                   id="district"
                   name="district"
-                  value="Centro"
+                  value={data.district}
                   disabled
                 />
               </div>
@@ -127,7 +159,7 @@ export default function ClientProfile() {
                   type="text"
                   id="city"
                   name="city"
-                  value="Chapecó"
+                  value={data.city}
                   disabled
                 />
               </div>
@@ -137,7 +169,7 @@ export default function ClientProfile() {
                   type="text"
                   id="state"
                   name="state"
-                  value="Santa Catarina"
+                  value={data.state}
                   disabled
                 />
               </div>
@@ -153,7 +185,7 @@ export default function ClientProfile() {
                   id="phone"
                   name="phone"
                   mask="(99) 99999-9999"
-                  value="(55) 99704-8940"
+                  value={data.phone}
                   disabled
                 />
               </div>
@@ -163,7 +195,7 @@ export default function ClientProfile() {
                   type="email"
                   id="email"
                   name="email"
-                  value="jaque@gmail.com"
+                  value={data.email}
                   disabled
                 />
               </div>
@@ -180,7 +212,7 @@ export default function ClientProfile() {
                   type="email"
                   id="email2"
                   name="email2"
-                  value="jaque@gmail.com"
+                  value={data.email}
                   disabled
                 />
               </div>
@@ -190,7 +222,7 @@ export default function ClientProfile() {
                   type="password"
                   id="password"
                   name="password"
-                  value="123445556"
+                  value={data.password}
                   disabled
                 />
               </div>
@@ -200,18 +232,12 @@ export default function ClientProfile() {
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
-                  value="123445556"
+                  value={data.password}
                   disabled
                 />
               </div>
             </div>
           </ElementForm>
-
-          <Buttons>
-            <Link to="/newSchedule">
-              <button>Voltar</button>
-            </Link>
-          </Buttons>
         </form>
       </Box>
     </Window>
