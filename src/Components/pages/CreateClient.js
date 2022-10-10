@@ -62,55 +62,61 @@ export default function CreateClient() {
   const navigate = useNavigate();
 
   function submitForm(event) {
-    event.preventDefault();
+    if (password === confirmPassword) {
+      event.preventDefault();
 
-    setDisabled(true);
-    setLoading(true);
+      setDisabled(true);
+      setLoading(true);
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-    const date = birthdate.split("/")
+      const date = birthdate.split("/");
 
-    const client = {
-      number,
-      image,
-      name,
-      birthdate: `${date[2]}/${date[1]}/${date[0]}`,
-      cpf,
-      sex,
-      street,
-      complement,
-      district,
-      city,
-      state,
-      phone,
-      email,
-      password,
-    };
+      const client = {
+        number,
+        image,
+        name,
+        birthdate: `${date[2]}/${date[1]}/${date[0]}`,
+        cpf,
+        sex,
+        street,
+        complement,
+        district,
+        city,
+        state,
+        phone,
+        email,
+        password,
+      };
 
-    console.log(client);
+      console.log(client);
 
-    const promise = axios.post("http://localhost:5000/client", client, config);
+      const promise = axios.post(
+        "http://localhost:5000/client",
+        client,
+        config
+      );
 
-    promise
-      .then((response) => {
-        console.log(response.data);
-        setError("Cliente cadastrado com sucesso!");
-        openModal();
-        setDisabled(false);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error)
-        setError(error.response.data);
-        openModal();
-        setDisabled(false);
-        setLoading(false);
-      });
+      promise
+        .then((response) => {
+          console.log(response.data);
+          setError("Cliente cadastrado com sucesso!");
+          openModal();
+          setDisabled(false);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(error.response.data);
+          openModal();
+          setDisabled(false);
+          setLoading(false);
+        });
+    }
   }
 
   return (
@@ -125,7 +131,9 @@ export default function CreateClient() {
 
             <div className="personalInfo">
               <div className="profilePicture">
-                <label for="avatar">Digite uma URL para sua foto de perfil:</label>
+                <label for="avatar">
+                  Digite uma URL para sua foto de perfil:
+                </label>
                 <div>
                   <img src={image ? image : perfil} />
                 </div>

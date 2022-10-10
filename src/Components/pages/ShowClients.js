@@ -7,7 +7,31 @@ import axios from "axios";
 
 import Sidebar from "../shared/Sidebar";
 
-function Clients({client}) {
+function Clients({ client }) {
+  const { token } = useContext(Context);
+
+  console.log(client)
+
+  function deleteClient() {
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const promise = axios.delete(
+      `http://localhost:5000/client/${client.id}`,
+      config
+    );
+
+    promise
+      .then((response) => {
+        alert("Cliente deletado com sucesso!");
+      })
+      .catch((error) => {});
+  }
+
   return (
     <tr>
       <td>

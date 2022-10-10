@@ -1,13 +1,149 @@
 import styled from "styled-components";
 import InputMask from "react-input-mask";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import Context from "../../Context/Context";
+import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
+import Modal from "react-modal";
 
 import Sidebar from "../shared/Sidebar";
 
 import perfil from "../../assets/images/example.jpeg";
 
+function Sectors({ sector }) {
+  const name = sector.name[0].toUpperCase() + sector.name.substring(1);
+
+  return <option value={sector.id}>{name}</option>;
+}
+
 export default function CreateProfessional() {
-  // abrir os serviços de acordo com os itens selecionados
+  const { token } = useContext(Context);
+
+  const [image, setImage] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [birthdate, setBirthdate] = React.useState("");
+  const [cpf, setCpf] = React.useState("");
+  const [sex, setSex] = React.useState("");
+  const [street, setStreet] = React.useState("");
+  const [number, setNumber] = React.useState("");
+  const [complement, setComplement] = React.useState(null);
+  const [district, setDistrict] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [state, setState] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [office, setOffice] = React.useState("");
+  const [sector_id, setSectorId] = React.useState("");
+
+  const [disabled, setDisabled] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const [sectors, setSectors] = React.useState([]);
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-15%",
+      transform: "translate(-50%, -50%)",
+      border: "1px solid var(--cor-detalhes)",
+      borderRadius: "10px",
+    },
+  };
+
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  const [error, setError] = React.useState("");
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const navigate = useNavigate();
+
+  function submitForm(event) {
+    event.preventDefault();
+
+    setDisabled(true);
+    setLoading(true);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const date = birthdate.split("/");
+
+    const professional = {
+      number,
+      image,
+      name,
+      birthdate: `${date[2]}/${date[1]}/${date[0]}`,
+      cpf,
+      sex,
+      street,
+      complement,
+      district,
+      city,
+      state,
+      phone,
+      email,
+      office,
+      sectors_id: sector_id
+    };
+
+    console.log(professional);
+
+    const promise = axios.post("http://localhost:5000/professional", professional, config);
+
+    promise
+      .then((response) => {
+        console.log(response.data);
+        setError("Profissional cadastrado com sucesso!");
+        openModal();
+        setDisabled(false);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error.response.data);
+        openModal();
+        setDisabled(false);
+        setLoading(false);
+      });
+  }
+
+  function renderSections() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const promise = axios.get("http://localhost:5000/sector", config);
+
+    promise
+      .then((response) => {
+        setSectors(response.data);
+      })
+      .catch((error) => {
+        alert("Sessão expirada!");
+        navigate("/");
+      });
+  }
+
+  React.useEffect(() => {
+    renderSections();
+  }, []);
 
   return (
     <Window>
@@ -15,32 +151,53 @@ export default function CreateProfessional() {
       <Box>
         <h3>Cadastrar Novo Profissional</h3>
 
-        <form>
+        <form onSubmit={submitForm}>
           <ElementForm>
             <h4>Informações pessoais</h4>
 
             <div className="personalInfo">
               <div className="profilePicture">
-                <label for="avatar">Escolha uma foto de perfil:</label>
+                <label for="avatar">
+                  Digite uma URL para sua foto de perfil:
+                </label>
                 <div>
-                  <img src={perfil} />
+                  <img src={image ? image : perfil} />
                 </div>
                 <input
-                  type="file"
+                  type="text"
                   id="avatar"
                   name="avatar"
                   accept="image/png, image/jpeg"
+                  value={image}
+                  onChange={(e) => setImage(e.target.value)}
+                  disabled={disabled}
                   required
                 />
               </div>
               <div>
                 <div>
                   <label for="name">Nome Completo:</label>
-                  <input type="text" id="name" name="name" required />
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={disabled}
+                  />
                 </div>
                 <div>
                   <label for="date">Data de nascimento:</label>
-                  <input type="date" id="date" name="date" required />
+                  <InputMask
+                    id="date"
+                    name="date"
+                    mask="99/99/9999"
+                    required
+                    value={birthdate}
+                    onChange={(e) => setBirthdate(e.target.value)}
+                    disabled={disabled}
+                  />
                 </div>
                 <div>
                   <label for="cpf">CPF:</label>
@@ -48,15 +205,22 @@ export default function CreateProfessional() {
                     id="cpf"
                     name="cpf"
                     mask="999.999.999-99"
+                    value={cpf}
+                    onChange={(e) => setCpf(e.target.value)}
+                    disabled={disabled}
                     required
                   />
                 </div>
                 <div>
                   <label>Sexo:</label>
-                  <select name="select" required>
+                  <select
+                    name="select"
+                    required
+                    onChange={(e) => setSex(e.target.value)}
+                  >
                     <option value="null" selected></option>
                     <option value="female">Feminino</option>
-                    <option value="masc">Masculino</option>
+                    <option value="male">Masculino</option>
                     <option value="other">Prefiro não responder</option>
                   </select>
                 </div>
@@ -70,37 +234,28 @@ export default function CreateProfessional() {
             <div className="divWith2Itens">
               <div>
                 <label for="profession">Cargo:</label>
-                <input type="text" id="profession" name="profession" required />
-              </div>
-              <div>
-                <label for="admissionDate">Data de admissão:</label>
                 <input
-                  type="date"
-                  id="admissionDate"
-                  name="admissionDate"
+                  type="text"
+                  id="profession"
+                  name="profession"
                   required
+                  value={office}
+                  onChange={(e) => setOffice(e.target.value)}
+                  disabled={disabled}
                 />
               </div>
-            </div>
-            <div className="sectors">
-              <h5>Setores de trabalho:</h5>
               <div>
-                <label>
-                  <input type="checkbox" value="hair" />
-                  Cabelos
-                </label>
-                <label>
-                  <input type="checkbox" value="nails" />
-                  Unhas
-                </label>
-                <label>
-                  <input type="checkbox" value="makeup" />
-                  Maquiagem
-                </label>
-                <label>
-                  <input type="checkbox" value="hairRemoval" />
-                  Depilação
-                </label>
+                <label>Setor de serviço:</label>
+                <select
+                  name="select"
+                  required
+                  onChange={(e) => setSectorId(e.target.value)}
+                >
+                  <option value="null" selected></option>
+                  {sectors.map((sector, index) => (
+                    <Sectors key={index} sector={sector} />
+                  ))}
+                </select>
               </div>
             </div>
           </ElementForm>
@@ -111,27 +266,74 @@ export default function CreateProfessional() {
             <div>
               <div>
                 <label for="adress">Endereço:</label>
-                <input type="text" id="adress" name="adress" required />
+                <input
+                  type="text"
+                  id="adress"
+                  name="adress"
+                  required
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
+                  disabled={disabled}
+                />
               </div>
               <div>
                 <label for="number">Número:</label>
-                <input type="text" id="number" name="number" required />
+                <input
+                  type="text"
+                  id="number"
+                  name="number"
+                  required
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
+                  disabled={disabled}
+                />
               </div>
               <div>
                 <label for="complement">Complemento:</label>
-                <input type="text" id="complement" name="complement" />
+                <input
+                  type="text"
+                  id="complement"
+                  name="complement"
+                  value={complement}
+                  onChange={(e) => setComplement(e.target.value)}
+                  disabled={disabled}
+                />
               </div>
               <div>
                 <label for="district">Bairro:</label>
-                <input type="text" id="district" name="district" required />
+                <input
+                  type="text"
+                  id="district"
+                  name="district"
+                  required
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                  disabled={disabled}
+                />
               </div>
               <div>
                 <label for="city">Cidade:</label>
-                <input type="text" id="city" name="city" required />
+                <input
+                  type="text"
+                  id="city"
+                  name="city"
+                  required
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  disabled={disabled}
+                />
               </div>
               <div>
                 <label for="state">Estado:</label>
-                <input type="text" id="state" name="state" required />
+                <input
+                  type="text"
+                  id="state"
+                  name="state"
+                  required
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  disabled={disabled}
+                />
               </div>
             </div>
           </ElementForm>
@@ -146,11 +348,21 @@ export default function CreateProfessional() {
                   name="phone"
                   mask="(99) 99999-9999"
                   required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  disabled={disabled}
                 />
               </div>
               <div>
                 <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={disabled}
+                />
               </div>
             </div>
           </ElementForm>
@@ -159,9 +371,19 @@ export default function CreateProfessional() {
             <Link to="/showProfessionals">
               <button>Voltar</button>
             </Link>
-            <button className="confirm">Cadastrar</button>
+            <button type="submit" className="confirm">Cadastrar</button>
           </Buttons>
         </form>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+        >
+          <ModalEstilo>
+            <p>{error}</p>
+            <button onClick={closeModal}>Fechar</button>
+          </ModalEstilo>
+        </Modal>
       </Box>
     </Window>
   );
@@ -251,11 +473,6 @@ const ElementForm = styled.div`
         object-fit: cover;
       }
     }
-
-    input {
-      border: none;
-      display: flex;
-    }
   }
 
   label {
@@ -286,7 +503,8 @@ const ElementForm = styled.div`
       width: 100%;
       display: inline-block;
 
-      input {
+      input,
+      select {
         width: 20px;
         height: 20px;
         display: inline-block;
@@ -330,5 +548,44 @@ const Buttons = styled.div`
   button.confirm {
     background-color: #3cb371;
     color: var(--cor-fundo);
+  }
+`;
+
+const ModalEstilo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  h4 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  p {
+    line-height: 25px;
+    text-align: center;
+
+    span {
+      font-weight: 200;
+    }
+  }
+
+  button {
+    width: 50%;
+    height: 30px;
+    margin-top: 20px;
+    background-color: var(--cor-detalhes);
+    color: var(--cor-fundo);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  &:hover {
+    filter: brightness(0.8);
   }
 `;
