@@ -5,7 +5,6 @@ import Context from "../../Context/Context";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import axios from "axios";
-import { ThreeDots } from "react-loader-spinner";
 import Modal from "react-modal";
 
 import Sidebar from "../shared/Sidebar";

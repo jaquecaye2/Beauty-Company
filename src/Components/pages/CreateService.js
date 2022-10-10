@@ -1,11 +1,119 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import InputMask from "react-input-mask";
+import { useContext } from "react";
+import Context from "../../Context/Context";
+import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import axios from "axios";
+import Modal from "react-modal";
 
 import Sidebar from "../shared/Sidebar";
 
+function Sectors({ sector }) {
+  const name = sector.name[0].toUpperCase() + sector.name.substring(1);
+
+  return <option value={sector.id}>{name}</option>;
+}
+
 export default function CreateService() {
-  // ao clicar em outro abrir um novo input dizendo qual é o outro serviço e cadastrar esse no banco
+  const { token } = useContext(Context);
+
+  const [sectors, setSectors] = React.useState([]);
+
+  const [sector_id, setSectorId] = React.useState("");
+  const [nameService, setNameService] = React.useState("");
+  const [description, setDescription] = React.useState(null);
+  const [price, setPrice] = React.useState("");
+
+  const [disabled, setDisabled] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-15%",
+      transform: "translate(-50%, -50%)",
+      border: "1px solid var(--cor-detalhes)",
+      borderRadius: "10px",
+    },
+  };
+
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  const [error, setError] = React.useState("");
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const navigate = useNavigate();
+
+  function submitForm(event) {
+    event.preventDefault();
+
+    setDisabled(true);
+    setLoading(true);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const service = { name: nameService, description, price, sector_id };
+
+    console.log(service);
+
+    const promise = axios.post(
+      "http://localhost:5000/service",
+      service,
+      config
+    );
+
+    promise
+      .then((response) => {
+        setError("Serviço cadastrado com sucesso!");
+        openModal();
+        setDisabled(false);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.response.data);
+        openModal();
+        setDisabled(false);
+        setLoading(false);
+      });
+  }
+
+  function renderSections() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const promise = axios.get("http://localhost:5000/sector", config);
+
+    promise
+      .then((response) => {
+        setSectors(response.data);
+      })
+      .catch((error) => {
+        alert("Sessão expirada!");
+        navigate("/");
+      });
+  }
+
+  React.useEffect(() => {
+    renderSections();
+  }, []);
 
   return (
     <Window>
@@ -13,42 +121,81 @@ export default function CreateService() {
       <Box>
         <h3>Cadastrar Novo Serviço</h3>
 
-        <FormStyle>
+        <FormStyle onSubmit={submitForm}>
           <div className="inputs">
             <div>
               <label>Tipo de serviço:</label>
-              <select name="select" required>
+              <select
+                name="select"
+                required
+                onChange={(e) => setSectorId(e.target.value)}
+              >
                 <option value="null" selected></option>
-                <option value="hair">Cabelos</option>
-                <option value="nails">Unhas</option>
-                <option value="makeup">Maquiagem</option>
-                <option value="hairRemoval">Depilação</option>
-                <option value="other">Outro</option>
+
+                {sectors.map((sector, index) => (
+                  <Sectors key={index} sector={sector} />
+                ))}
               </select>
             </div>
 
             <div>
               <label for="name">Nome do serviço:</label>
-              <input type="text" id="name" name="name" required />
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                value={nameService}
+                onChange={(e) => setNameService(e.target.value)}
+                disabled={disabled}
+              />
             </div>
 
             <div>
               <label for="description">Descrição do serviço:</label>
-              <input type="text" id="description" name="description" />
+              <input
+                type="text"
+                id="description"
+                name="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                disabled={disabled}
+              />
             </div>
 
             <div>
               <label for="price">Valor do serviço:</label>
-              <input type="number" id="price" name="price" min="0" required />
+              <input
+                type="number"
+                id="price"
+                name="price"
+                min="0"
+                required
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                disabled={disabled}
+              />
             </div>
           </div>
           <Buttons>
             <Link to="/showServices">
               <button>Voltar</button>
             </Link>
-            <button className="confirm">Cadastrar</button>
+            <button type="submit" className="confirm">
+              Cadastrar
+            </button>
           </Buttons>
         </FormStyle>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+        >
+          <ModalEstilo>
+            <p>{error}</p>
+            <button onClick={closeModal}>Fechar</button>
+          </ModalEstilo>
+        </Modal>
       </Box>
     </Window>
   );
@@ -76,7 +223,7 @@ const Box = styled.div`
   }
 `;
 
-const FormStyle = styled.div`
+const FormStyle = styled.form`
   border-top: 1px solid var(--cor-detalhes);
   padding: 20px 0;
 
@@ -128,5 +275,44 @@ const Buttons = styled.div`
   button.confirm {
     background-color: #3cb371;
     color: var(--cor-fundo);
+  }
+`;
+
+const ModalEstilo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  h4 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  p {
+    line-height: 25px;
+    text-align: center;
+
+    span {
+      font-weight: 200;
+    }
+  }
+
+  button {
+    width: 50%;
+    height: 30px;
+    margin-top: 20px;
+    background-color: var(--cor-detalhes);
+    color: var(--cor-fundo);
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  &:hover {
+    filter: brightness(0.8);
   }
 `;
