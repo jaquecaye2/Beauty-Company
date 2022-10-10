@@ -223,6 +223,9 @@ export default function NewSchedule() {
 
   function closeModal() {
     setIsOpen(false);
+    if(error === "Agendamento realizado com sucesso!"){
+      navigate("/clientProfile")
+    }
   }
 
   function submitForm(event) {
@@ -248,7 +251,7 @@ export default function NewSchedule() {
 
     promise
       .then((response) => {
-        setError(response.data);
+        setError("Agendamento realizado com sucesso!");
         openModal();
         setLoading(false);
       })

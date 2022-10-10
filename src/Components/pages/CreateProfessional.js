@@ -64,6 +64,9 @@ export default function CreateProfessional() {
 
   function closeModal() {
     setIsOpen(false);
+    if(error === "Profissional cadastrado com sucesso!"){
+      navigate("/showProfessionals")
+    }
   }
 
   const navigate = useNavigate();

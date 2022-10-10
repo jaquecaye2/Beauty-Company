@@ -57,6 +57,9 @@ export default function CreateClient() {
 
   function closeModal() {
     setIsOpen(false);
+    if(error === "Cliente cadastrado com sucesso!"){
+      navigate("/showClients")
+    }
   }
 
   const navigate = useNavigate();

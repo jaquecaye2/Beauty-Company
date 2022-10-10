@@ -51,6 +51,9 @@ export default function CreateService() {
 
   function closeModal() {
     setIsOpen(false);
+    if(error === "Serviço cadastrado com sucesso!"){
+      navigate("/showServices")
+    }
   }
 
   const navigate = useNavigate();
